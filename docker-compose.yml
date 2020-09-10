@@ -1,0 +1,20 @@
+version: "3.8"
+services: 
+    kitcon_balancer:
+        container_name: "kitcon_balancer"
+        image: nginx
+        restart: "no"
+        volumes:
+          - $PWD/balancer/sites-enabled:/etc/nginx/sites-enabled
+          - $PWD/balancer/nginx.conf:/etc/nginx/nginx.conf
+        ports:
+          - "80:80"
+    
+    kitcon_web:
+        container_name: "kitcon_web"
+        image: "node"
+        restart: "no"
+        working_dir: "/mnt/project"
+        volumes: 
+            - $PWD/../kitcon-web:/mnt/project
+        command: ["npm", "start"]
