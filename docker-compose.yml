@@ -17,4 +17,19 @@ services:
         working_dir: "/mnt/project"
         volumes: 
             - $PWD/../kitcon-web:/mnt/project
+            - $PWD/../kitcon-core:/mnt/project/kitcon/core
+            - $PWD/../kitcon-ui:/mnt/project/kitcon/ui
+            - $PWD/../kitcon-node:/mnt/project/kitcon/node
+
         command: ["npm", "start"]
+    
+    kitcon_libs:
+        container_name: "kitcon_libs"
+        image: "node"
+        restart: "no"
+        working_dir: "/mnt"
+        volumes: 
+            - $PWD/../kitcon-core:/mnt/core
+            - $PWD/../kitcon-ui:/mnt/ui
+            - $PWD/../kitcon-node:/mnt/node
+        tty: true  
