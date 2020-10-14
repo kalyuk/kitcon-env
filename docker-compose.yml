@@ -13,23 +13,36 @@ services:
     kitcon_web:
         container_name: "kitcon_web"
         image: "node"
+        env_file:
+            - .env
         restart: "no"
         working_dir: "/mnt/project"
         volumes: 
             - $PWD/../kitcon-web:/mnt/project
-            - $PWD/../kitcon-core:/mnt/project/kitcon/core
-            - $PWD/../kitcon-ui:/mnt/project/kitcon/ui
-            - $PWD/../kitcon-node:/mnt/project/kitcon/node
+            - $PWD/../kitcon-core:/mnt/kitcon-core
+            - $PWD/../kitcon-ui:/mnt/kitcon-ui
+            - $PWD/../kitcon-node:/mnt/kitcon-node
 
         command: ["npm", "start"]
-    
-    kitcon_libs:
-        container_name: "kitcon_libs"
+
+    kitcon_redis:
+        container_name: "kitcon_redis"
+        image: "redis:alpine"
+        restart: "no"
+        ports: 
+            - "6379:6379"
+
+    kitcon_seo_service:
+        container_name: "kitcon_seo_service"
         image: "node"
         restart: "no"
-        working_dir: "/mnt"
+        working_dir: "/mnt/project"
+        env_file:
+            - .env
         volumes: 
-            - $PWD/../kitcon-core:/mnt/core
-            - $PWD/../kitcon-ui:/mnt/ui
-            - $PWD/../kitcon-node:/mnt/node
-        tty: true  
+            - $PWD/../kitcon-seo-service:/mnt/project
+            - $PWD/../kitcon-core:/mnt/kitcon-core
+            - $PWD/../kitcon-ui:/mnt/kitcon-ui
+            - $PWD/../kitcon-node:/mnt/kitcon-node
+
+        command: ["npm", "start"]
